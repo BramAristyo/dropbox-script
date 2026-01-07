@@ -1,0 +1,11 @@
+.env
+
+dropbox-script
+main
+*.exe
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
