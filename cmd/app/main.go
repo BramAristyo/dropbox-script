@@ -18,5 +18,5 @@ func main() {
 		fmt.Println("Failed get Dropbox token: ", err)
 	}
 
-	fmt.Println(token.AccessToken)
+	dropbox.GetAllFiles(token.AccessToken)
 }
