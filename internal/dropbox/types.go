@@ -5,6 +5,10 @@ type ListFolderRequest struct {
 	Recursive bool   `json:"recursive"`
 }
 
+type ListFolderContinueRequest struct {
+	Cursor string `json:"cursor"`
+}
+
 type FileInfo struct {
 	Tag            string `json:".tag"`
 	Name           string `json:"name"`

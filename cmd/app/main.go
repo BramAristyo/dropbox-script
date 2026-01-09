@@ -14,7 +14,7 @@ func main() {
 
 	token, err := dropbox.GetNewToken(cfg.Dropbox.AppKey, cfg.Dropbox.SecretKey, cfg.Dropbox.RefreshToken)
 
-	if err != err {
+	if err != nil {
 		fmt.Println("Failed get Dropbox token: ", err)
 	}
 
