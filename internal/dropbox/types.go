@@ -1,5 +1,7 @@
 package dropbox
 
+import "time"
+
 type ListFolderRequest struct {
 	Path      string `json:"path"`
 	Recursive bool   `json:"recursive"`
@@ -10,11 +12,9 @@ type ListFolderContinueRequest struct {
 }
 
 type FileInfo struct {
-	Tag            string `json:".tag"`
-	Name           string `json:"name"`
-	PathLower      string `json:"path_lower"`
-	ClientModified string `json:"client_modified"`
-	Size           uint64 `json:"size"`
+	Name         string    `json:"name"`
+	ModifiedTime time.Time `json:"client_modified"`
+	Size         uint64    `json:"size"`
 }
 
 type ListResponse struct {

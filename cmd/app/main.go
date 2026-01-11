@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/BramAristyo/dropbox-script/internal/config"
 	"github.com/BramAristyo/dropbox-script/internal/dropbox"
@@ -9,14 +10,20 @@ import (
 )
 
 func main() {
+	start := time.Now()
+
 	_ = godotenv.Load()
 	cfg := config.GetConfig()
 
 	token, err := dropbox.GetNewToken(cfg.Dropbox.AppKey, cfg.Dropbox.SecretKey, cfg.Dropbox.RefreshToken)
 
+	fmt.Println("Success Auth .. ")
+
 	if err != nil {
 		fmt.Println("Failed get Dropbox token: ", err)
 	}
 
-	dropbox.GetAllFiles(token.AccessToken)
+	dropbox.Sync(token.AccessToken, cfg.Dropbox.Path, cfg.Local.Path)
+
+	fmt.Printf("Total runtime: %v\n", time.Since(start))
 }
