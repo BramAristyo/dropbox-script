@@ -15,6 +15,8 @@ func main() {
 	_ = godotenv.Load()
 	cfg := config.GetConfig()
 
+	fmt.Println("Configuration loaded successfully. Script is starting...")
+
 	token, err := dropbox.GetNewToken(cfg.Dropbox.AppKey, cfg.Dropbox.SecretKey, cfg.Dropbox.RefreshToken)
 
 	fmt.Println("Success Auth .. ")

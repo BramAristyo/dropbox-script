@@ -139,17 +139,31 @@ func GetAllLocalFiles(path string) []FileInfo {
 	return allFiles
 }
 
-func linearSearch(key string, AllFiles []FileInfo) *FileInfo {
-	var foundFile *FileInfo
+// func linearSearch(key string, AllFiles []FileInfo) *FileInfo {
+// 	var foundFile *FileInfo
 
-	for _, file := range AllFiles {
-		if file.Name == key {
-			foundFile = &file
-			break
-		}
+// 	for _, file := range AllFiles {
+// 		if file.Name == key {
+// 			foundFile = &file
+// 			break
+// 		}
+// 	}
+
+// 	return foundFile
+// }
+
+func mapSearch(key string, AllFiles []FileInfo) *FileInfo {
+	var fileMap = make(map[string]FileInfo)
+
+	for _, v := range AllFiles {
+		fileMap[v.Name] = v
 	}
 
-	return foundFile
+	if file, ok := fileMap[key]; ok {
+		return &file
+	}
+
+	return &FileInfo{}
 }
 
 func download(accessToken, dropboxPath, localPath string, time time.Time) {
@@ -201,16 +215,22 @@ func Sync(accessToken, dropboxPath, localPath string) {
 	allDropboxFiles := GetAllFiles(accessToken)
 	allLocalFiles := GetAllLocalFiles(localPath)
 
+	localMap := make(map[string]FileInfo)
+	for _, v := range allLocalFiles {
+		localMap[v.Name] = v
+	}
+
 	created := 0
 	updated := 0
 	skipped := 0
 
 	fmt.Println("Sync on process ... please wait")
 	for _, v := range allDropboxFiles {
-		localFile := linearSearch(v.Name, allLocalFiles)
 		dropboxFilePath, localFilePath := pathBuilder(v.Name, dropboxPath, localPath)
 
-		if localFile == nil {
+		localFile, exist := localMap[v.Name]
+
+		if !exist {
 			download(accessToken, dropboxFilePath, localFilePath, v.ModifiedTime)
 			fmt.Println("Success Insert ", v.Name)
 			created++
@@ -227,7 +247,5 @@ func Sync(accessToken, dropboxPath, localPath string) {
 		}
 	}
 
-	fmt.Println("Updated: ", updated, " files.")
-	fmt.Println("Skipped: ", skipped, " files.")
-	fmt.Println("Created: ", created, " files.")
+	fmt.Printf("Summary:\nUpdated: %d\nCreated: %d\nSkipped: %d\n", updated, created, skipped)
 }
