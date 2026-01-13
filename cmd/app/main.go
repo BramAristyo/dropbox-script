@@ -10,16 +10,10 @@ import (
 )
 
 func main() {
-	start := time.Now()
-
 	_ = godotenv.Load()
 	cfg := config.GetConfig()
 
-	fmt.Println("Configuration loaded successfully. Script is starting...")
-
 	token, err := dropbox.GetNewToken(cfg.Dropbox.AppKey, cfg.Dropbox.SecretKey, cfg.Dropbox.RefreshToken)
-
-	fmt.Println("Success Auth .. ")
 
 	if err != nil {
 		fmt.Println("Failed get Dropbox token: ", err)
@@ -27,5 +21,6 @@ func main() {
 
 	dropbox.Sync(token.AccessToken, cfg.Dropbox.Path, cfg.Local.Path)
 
-	fmt.Printf("Total runtime: %v\n", time.Since(start))
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	fmt.Printf(" %s\n", time.Now().In(loc))
 }
