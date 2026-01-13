@@ -247,5 +247,9 @@ func Sync(accessToken, dropboxPath, localPath string) {
 		}
 	}
 
-	fmt.Printf("Summary:\nUpdated: %d\nCreated: %d\nSkipped: %d\n", updated, created, skipped)
+	if updated == 0 && created == 0 {
+		fmt.Printf("No changes were maded.")
+	} else {
+		fmt.Printf("Summary:\nUpdated: %d\nCreated: %d\nSkipped: %d.", updated, created, skipped)
+	}
 }
