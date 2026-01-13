@@ -224,7 +224,6 @@ func Sync(accessToken, dropboxPath, localPath string) {
 	updated := 0
 	skipped := 0
 
-	fmt.Println("Sync on process ... please wait")
 	for _, v := range allDropboxFiles {
 		dropboxFilePath, localFilePath := pathBuilder(v.Name, dropboxPath, localPath)
 
